@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentValidation;
+using System.Text.RegularExpressions;
 
 namespace Application.Commands.AddPerson
 {
@@ -12,10 +13,10 @@ namespace Application.Commands.AddPerson
                 .NotEmpty().NotNull().Length(11, 11).WithMessage("Model.Invalid.PersonalNumber").Matches("^[0-9]*$").WithMessage("Model.Invalid.PersonalNumber");
 
             RuleFor(o => o.FirstName)
-                .NotEmpty().NotNull().Length(2, 50).Must(FirstNameValid).WithMessage("Model.Invalid.FirstName");
+                .NotEmpty().NotNull().Length(2, 50).Must(StringAlphabetValidation).WithMessage("Model.Invalid.FirstName");
 
             RuleFor(o => o.LastName)
-                .NotEmpty().Length(2, 50).Matches("[a-zA-Z]+").WithMessage("Model.Invalid.LastName");
+                .NotEmpty().Length(2, 50).Must(StringAlphabetValidation).WithMessage("Model.Invalid.LastName");
 
             RuleFor(o => o.PhoneNumber)
                 .Length(4, 50).Matches("^[0-9]*$").WithMessage("Model.Invalid.PhoneNumber");
@@ -34,17 +35,25 @@ namespace Application.Commands.AddPerson
             return age > 18;
         }
 
-        protected bool FirstNameValid(string firstName)
+        protected bool StringAlphabetValidation(string firstName)
         {
+            if (Regex.IsMatch(firstName, @"^[a-zA-Z]+$"))
+            {
+                return true;
+            }
+
             foreach (var @char in firstName)
             {
                 var intValueOfChar = (int)@char;
+
+                //ეს რიცხვები ქართული ალფავიტის პირველი და ბოლო ასოების ასკის შესატყვისი ასოები არის
                 if (intValueOfChar < 4304 || intValueOfChar > 4336)
                 {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+
+            return true;
         }
     }
 }
