@@ -1,9 +1,9 @@
 # PersonReference
  
-გაშვებისთბის საჭირო არის
+Running is required
 
-appsettings - ებში ქონექშენ სტრინგის და ლოგირების ფაილის მისამართის გასწორება კონკრე
+Specify the address of the connection string and login file in appsettings
 
-Db -ს დასაგენერირებრად 
-1) Api უნდა აირჩიოთ Startap პროექტად 
-2) Package Manager Console აირჩიოთ Infrastructure და გაუშვათ კომანდი Update-Database
+To generate Db
+1) You must select Api as the Startap project
+2) Select Package Manager Console Infrastructure and run the Update-Database command
